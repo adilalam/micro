@@ -2,8 +2,10 @@ const express = require('express')
 
 const router = express.Router();
 
-router.get('/api/user/signout', async (req, res) => {
-    res.send("currrent user")
+router.post('/api/user/signout', async (req, res) => {
+    req.session = null;
+
+    res.send({})
 })
 
 module.exports = {
