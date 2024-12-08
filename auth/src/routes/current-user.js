@@ -4,7 +4,7 @@ const { requireAuth } = require('../middleware/require-auth');
 
 const router = express.Router();
 
-router.post('/api/user/current-user', [authUser, requireAuth], async (req, res) => {
+router.get('/api/user/current-user', authUser, async (req, res) => {
     res.send({ user: req.user || null });
 })
 

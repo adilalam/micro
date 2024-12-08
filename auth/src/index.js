@@ -4,6 +4,7 @@ require('express-async-errors')
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session')
 const bodyParser = require('body-parser')
+const cors = require('cors');
 const { currentUserRouter } = require('./routes/current-user')
 const { signinUserRouter } = require('./routes/signin')
 const { signoutUserRouter } = require('./routes/signout')
@@ -12,6 +13,9 @@ const { errorHandler } = require('./middleware/errorHandler')
 
 const app = express()
 app.set('trust proxy', true);
+app.use(cors({
+    origin: 'http://localhost:3000',
+}));
 app.use(bodyParser.urlencoded({
     extended: true
 }))
@@ -33,8 +37,11 @@ app.all('*', async () => {
 app.use(errorHandler);
 
 const startApp = async () => {
-    if(!process.env.JWT_SECRET) {
+    if (!process.env.JWT_SECRET) {
         throw new Error("JWT token required")
+    }
+    if (!process.env.MONGODB_URL) {
+        throw new Error("MONGODB_URL required")
     }
     try {
         await mongoose.connect(process.env.MONGODB_URL);
@@ -43,8 +50,8 @@ const startApp = async () => {
         console.log('Not connected to db');
     }
 
-    app.listen(3000, () => {
-        console.log('app is running 3000');
+    app.listen(4000, () => {
+        console.log('app is running 4000');
     })
 }
 

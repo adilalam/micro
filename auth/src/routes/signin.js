@@ -33,7 +33,7 @@ router.post('/api/user/signin', async (req, res) => {
         jwt: userJwt
     };
 
-    res.status(200).send(existingUser);
+    res.status(200).send({ user: existingUser, token: userJwt });
 })
 
 module.exports = {
